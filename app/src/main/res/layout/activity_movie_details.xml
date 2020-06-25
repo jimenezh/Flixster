@@ -4,43 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="#2B2A2A">
+    android:background="#202020">
 
 
-    <TextView
-        android:id="@+id/tvTitle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerVertical="false"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="2dp"
-        android:fontFamily="sans-serif-black"
-        android:textColor="#FFFFFF"
-        android:textSize="40sp"
-        tools:autoText="false"
-        tools:text="This is a movie title" />
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvOverview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvRating"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="5dp"
-        android:textColor="#B1B0B0"
-        tools:text="This is an overview" />
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="2dp"
+            android:fontFamily="sans-serif-black"
+            android:textColor="#FFFFFF"
+            android:textSize="40sp"
+            tools:autoText="false"
+            tools:text="This is a movie title" />
 
-    <RatingBar
-        android:id="@+id/tvRating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTitle"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp" />
+        <RatingBar
+            android:id="@+id/tvRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:id="@+id/tvOverview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="0dp"
+            android:textColor="#B1B0B0"
+            tools:text="This is an overview" />
+
+    </LinearLayout>
 
 </RelativeLayout>

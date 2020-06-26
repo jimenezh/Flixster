@@ -34,7 +34,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     Context context;
     Movie movie;
     ActivityMovieDetailsBinding binding;
-    final String YOUTUBE_TRAILER_BASE_URL = "https://api.themoviedb.org/3/movie/%s/videos?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
+    final String YOUTUBE_TRAILER_BASE_URL = "https://api.themoviedb.org/3/movie/%s/videos?api_key="+R.string.moviedb_key;
     final String  TAG ="MovieDetails";
 
     @Override
@@ -79,7 +79,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                         try {
                             JSONArray result = jsonObject.getJSONArray("results");
                             Log.i(TAG, "Results: " + result.toString());
-                            String youtubeId = result.getJSONObject(0).getString("id");
+                            String youtubeId = result.getJSONObject(0).getString("key");
                             Intent intent = new Intent(context, MovieTrailerActivity.class);
                             intent.putExtra("id", youtubeId  );
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

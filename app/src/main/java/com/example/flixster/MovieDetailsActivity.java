@@ -35,7 +35,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     Context context;
     Movie movie;
     ActivityMovieDetailsBinding binding;
-    final String YOUTUBE_TRAILER_BASE_URL = "https://api.themoviedb.org/3/movie/%s/videos?api_key=" + R.string.moviedb_key;
+    String YOUTUBE_TRAILER_BASE_URL;
     final String  TAG ="MovieDetails";
 
     @Override
@@ -43,6 +43,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.getSupportActionBar().hide();
         context = getApplicationContext();
+
+        YOUTUBE_TRAILER_BASE_URL = "https://api.themoviedb.org/3/movie/%s/videos?api_key=" + getString( R.string.moviedb_key);
 
         setContentView(R.layout.activity_movie_details);
         // unwrap the movie passed in via intent, using its simple name as a key

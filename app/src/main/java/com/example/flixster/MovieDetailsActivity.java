@@ -10,6 +10,7 @@ import android.media.Rating;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -34,12 +35,13 @@ public class MovieDetailsActivity extends AppCompatActivity {
     Context context;
     Movie movie;
     ActivityMovieDetailsBinding binding;
-    final String YOUTUBE_TRAILER_BASE_URL = "https://api.themoviedb.org/3/movie/%s/videos?api_key="+R.string.moviedb_key;
+    final String YOUTUBE_TRAILER_BASE_URL = "https://api.themoviedb.org/3/movie/%s/videos?api_key=" + R.string.moviedb_key;
     final String  TAG ="MovieDetails";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getSupportActionBar().hide();
         context = getApplicationContext();
 
         setContentView(R.layout.activity_movie_details);

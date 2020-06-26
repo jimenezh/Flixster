@@ -1,5 +1,10 @@
 package com.example.flixster.models;
 
+import android.util.Log;
+
+import com.codepath.asynchttpclient.AsyncHttpClient;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,6 +13,9 @@ import org.parceler.Parcel;
 import java.util.ArrayList;
 import java.util.List;
 import org.parceler.Parcel;
+import org.parceler.Parcels;
+
+import okhttp3.Headers;
 
 @Parcel
 public class Movie {
@@ -17,7 +25,13 @@ public class Movie {
     String title;
     String overview;
     double voteAverage;
-    double popularity;
+
+    public int getId() {
+        return id;
+    }
+
+    int id;
+    final String TAG ="MOVIE";
 
     public Movie() {
     }
@@ -49,7 +63,7 @@ public class Movie {
         title = jsonObject.getString("title");
         overview = jsonObject.getString("overview");
         voteAverage = jsonObject.getDouble("vote_average");
-        popularity = jsonObject.getDouble("popularity");
+        id = jsonObject.getInt("id");
     }
 
     // Parses array of JSONs into a list of Movie objects. Uses Movie method to do so

@@ -4,6 +4,7 @@ import android.app.usage.ConfigurationStats;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.example.flixster.MovieDetailsActivity;
 import com.example.flixster.R;
 
+import com.example.flixster.databinding.ItemMovieBinding;
 import com.example.flixster.models.Movie;
 
 import org.parceler.Parcels;
@@ -30,8 +32,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
 
     Context context;
     List<Movie> movies;
-    final String PLACEHOLDER_POSTER ="https://courses.codepath.org/course_files/android_university_fast_track/assets/flicks_movie_placeholder.gif";
-    final String PLACE_HOLDER_BACKDROP ="https://courses.codepath.org/course_files/android_university_fast_track/assets/flicks_backdrop_placeholder.gif";
 
     public MovieAdapter(Context context, List<Movie> movies) {
         this.context = context;
@@ -43,8 +43,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.i("MovieAdapter", "onCreateViewHolder");
-        View movieView = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false );
-        return new ViewHolder(movieView);
+//        View movieView = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false );
+        ItemMovieBinding binding = ItemMovieBinding.inflate(LayoutInflater.from(context));
+        return new ViewHolder(binding);
     }
 
     // Populate data and bind it to view holder
@@ -64,27 +65,23 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView tvTitle;
-        TextView tvOverview;
-        ImageView ivPoster;
+        ItemMovieBinding itemMovieBinding;
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvOverview = itemView.findViewById(R.id.tvOverview);
-            ivPoster = itemView.findViewById(R.id.ivPoster);
+        public ViewHolder(@NonNull ItemMovieBinding itemMovieBinding) {
+            super(itemMovieBinding.getRoot());
+            this.itemMovieBinding = itemMovieBinding;
             // Adding listener
             itemView.setOnClickListener(this);
         }
 
         public void bind(Movie movie) {
-            tvTitle.setText(movie.getTitle());
-            tvOverview.setText(movie.getOverview());
+            itemMovieBinding.tvTitle.setText(movie.getTitle());
+            itemMovieBinding.tvOverview.setText(movie.getOverview());
+            // Setting image with glide
             String imageUrl;
             int placeholder;
             int margin = 10;
             int radius = 30;
-
             if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
                 imageUrl = movie.getBackdropPath();
                 placeholder = R.drawable.backdrop_placeholder;
@@ -92,8 +89,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
                 imageUrl = movie.getPosterPath();
                 placeholder = R.drawable.movie_placeholder;
             }
-
-            Glide.with(context).load(imageUrl).transform(new RoundedCornersTransformation(radius, margin)).placeholder(placeholder).into(ivPoster);
+            Glide.with(context).load(imageUrl).transform(new RoundedCornersTransformation(radius, margin)).placeholder(placeholder).into(itemMovieBinding.ivPoster);
         }
 
         @Override
@@ -109,7 +105,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
                 // serialize the movie using parceler, use its short name as a key
                 intent.putExtra(Movie.class.getSimpleName(), Parcels.wrap(movie));
                 // show the activity
-                context.startActivity(intent);
+                context.startActivity( intent);
             }
         }
     }

@@ -13,6 +13,7 @@ import android.widget.Adapter;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.flixster.adapters.MovieAdapter;
+import com.example.flixster.databinding.ActivityMainBinding;
 import com.example.flixster.models.Movie;
 
 import org.json.JSONArray;
@@ -26,26 +27,34 @@ import okhttp3.Headers;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String PLAYING_NOW_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
+    public static String PLAYING_NOW_URL;
     public static final String TAG = "MainActivity";
 
     public static List<Movie> movies;
+    MovieAdapter movieAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
-
-        RecyclerView rvMovies = this.findViewById(R.id.rvMovies);
+        PLAYING_NOW_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=" + getString(R.string.moviedb_key);
         movies = new ArrayList<>(); // initializing movies list
 
-        // Creating adapter
-        final MovieAdapter movieAdapter = new MovieAdapter(this, movies);
-        // Set the adapter on the recycler view
-        rvMovies.setAdapter(movieAdapter);
-        // Set layout manager on recycler view
-        rvMovies.setLayoutManager(new LinearLayoutManager(this));
+        // Binding to xml
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        // Setting Layout manager
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        binding.rvMovies.setLayoutManager(new LinearLayoutManager(this));
+        // Setting adapter
+        movieAdapter = new MovieAdapter(this, movies);
+        binding.rvMovies.setAdapter(movieAdapter);
+
+        fetchMovies();
+
+    }
+
+    private void fetchMovies() {
 
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(PLAYING_NOW_URL, new JsonHttpResponseHandler() {
@@ -56,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     JSONArray results = jsonObject.getJSONArray("results");
                     Log.i(TAG, "Results: " + results.toString());
-                    movies.addAll( Movie.fromJSONArray(results)); // adding movies from API response
+                    movies.addAll(Movie.fromJSONArray(results)); // adding movies from API response
                     movieAdapter.notifyDataSetChanged(); // Update UI
                 } catch (JSONException e) {
                     Log.e(TAG, "Hit json exception");
@@ -70,6 +79,5 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "onFailure");
             }
         });
-
     }
 }

@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
 
     public static List<Movie> movies;
+    MovieAdapter movieAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +40,20 @@ public class MainActivity extends AppCompatActivity {
         movies = new ArrayList<>(); // initializing movies list
 
         // Binding to xml
-        ActivityMainBinding  binding = ActivityMainBinding.inflate(getLayoutInflater());
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         // Setting Layout manager
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         binding.rvMovies.setLayoutManager(new LinearLayoutManager(this));
         // Setting adapter
-        final MovieAdapter movieAdapter = new MovieAdapter(this, movies);
+        movieAdapter = new MovieAdapter(this, movies);
         binding.rvMovies.setAdapter(movieAdapter);
 
+        fetchMovies();
+
+    }
+
+    private void fetchMovies() {
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(PLAYING_NOW_URL, new JsonHttpResponseHandler() {
             @Override
@@ -57,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     JSONArray results = jsonObject.getJSONArray("results");
                     Log.i(TAG, "Results: " + results.toString());
-                    movies.addAll( Movie.fromJSONArray(results)); // adding movies from API response
+                    movies.addAll(Movie.fromJSONArray(results)); // adding movies from API response
                     movieAdapter.notifyDataSetChanged(); // Update UI
                 } catch (JSONException e) {
                     Log.e(TAG, "Hit json exception");
@@ -71,6 +77,5 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "onFailure");
             }
         });
-
     }
 }
